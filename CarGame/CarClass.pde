@@ -1,63 +1,55 @@
-float angle = radians(2);
-float totaleAngle = 0;
+float truningAnge = radians(2);
+float currentAngle = 0;
 float sizeX = 40;
 float sizeY = 20;
 PVector pos = new PVector(0,0);
 PVector direction = new PVector(1,0);
-PVector speed = new PVector(0,0);
-float acceleration = 0;
-
+float speed = 0;
+float pivotOffset = -10;
+boolean showInfo = false;
 
 class Car {
   void show() {
-    fill(255);
-    stroke(0);
     strokeWeight(1);
-    //line(pos.x,pos.y,pos.x + direction.x * 20,pos.y + direction.y * 20);
-    printCar();  
+    pushMatrix();
+    translate(pos.x - pivotOffset,pos.y);
+    rotate(currentAngle);
+    image(carImg,-30 - pivotOffset,-15);
+    if (showInfo){
+      //pivot Point: red
+      stroke(255,0,0); strokeWeight(10);
+      point(0,0);
+    }
+    popMatrix(); 
   }
   
   void update() {
     if (keyPressed == true) {
       if (key == 'a'){
-        direction.rotate(-angle);
-        totaleAngle -= angle;
+        direction.rotate(-truningAnge);
+        currentAngle -= truningAnge;
       }
       if (key == 'd'){
-        direction.rotate(angle);
-        totaleAngle += angle;
+        direction.rotate(truningAnge);
+        currentAngle += truningAnge;
       }
       if (key == 'w'){
-        if (acceleration < 4){
-          acceleration += 0.1; 
+        if (speed < 4){
+          speed += 0.1; 
         }
       }
       if (key == 's'){
-        if (acceleration > -1){
-          acceleration -= 0.05;        
+        if (speed > -1){
+          speed -= 0.05;        
         }
       }
     }
-    
-    speed = PVector.mult(direction,acceleration);
-    pos.add(speed);
-    
+    pos.add(PVector.mult(direction,speed));
     if (pos.dist(new PVector(0,0)) > width/2) {
       pos.x = 0;
       pos.y = 0; 
     }
-  }  
-}
-
-void printCar(){
-  pushMatrix();
-  translate(pos.x,pos.y);
-  rotate(totaleAngle);
-  //fill(255,0,0);
-  //noStroke();
-  //rect(-sizeX/2,-sizeY/2,sizeX,sizeY);
-  image(carImg,-30,-15);
-  popMatrix();
+  }
 }
 
 PVector add3Vec(PVector a,PVector b,PVector c){
