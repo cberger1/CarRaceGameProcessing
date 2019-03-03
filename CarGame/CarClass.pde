@@ -1,58 +1,76 @@
-float truningAnge = radians(2);
+float truningAnge = radians(4);
 float currentAngle = 0;
-float sizeX = 40;
-float sizeY = 20;
-PVector pos = new PVector(0,0);
-PVector direction = new PVector(1,0);
+int sizeX = 40;
+int sizeY = 20;
+PVector pos = new PVector(0, 0);
+PVector direction = new PVector(1, 0);
 float speed = 0;
+float maxSpeed = 8;
 float pivotOffset = -10;
-boolean showInfo = false;
+boolean showInfo = true;
+PVector[] corners = new PVector[4];
 
 class Car {
+  
+  void setupCar(){
+    corners[0] = new PVector(sizeX/2 - pivotOffset,sizeY/2);
+    corners[1] = new PVector(sizeX/2 - pivotOffset,-sizeY/2);
+    corners[2] = new PVector(-sizeX/2 - pivotOffset,-sizeY/2);
+    corners[3] = new PVector(-sizeX/2 - pivotOffset, sizeY/2);  
+  }
+  
   void show() {
     strokeWeight(1);
     pushMatrix();
-    translate(pos.x - pivotOffset,pos.y);
+    translate(pos.x - pivotOffset, pos.y);
     rotate(currentAngle);
-    image(carImg,-30 - pivotOffset,-15);
-    if (showInfo){
-      //pivot Point: red
-      stroke(255,0,0); strokeWeight(10);
-      point(0,0);
+    image(carImg, -sizeX/2 - pivotOffset, -sizeY/2);
+    if (showInfo) {
+      strokeWeight(10);
+      //show the pivot point; Color: red
+      stroke(255, 0, 0);
+      point(0, 0);
+      //show the corners of the car; Color; blue
+      for (int i = 0; i < 4; i++) {
+        stroke(0, 0, 255);
+        point(corners[i].x, corners[i].y);
+      }
     }
-    popMatrix(); 
+    popMatrix();
   }
-  
+
   void update() {
     if (keyPressed == true) {
-      if (key == 'a'){
+      if (key == 'a') {
         direction.rotate(-truningAnge);
         currentAngle -= truningAnge;
       }
-      if (key == 'd'){
+      if (key == 'd') {
         direction.rotate(truningAnge);
         currentAngle += truningAnge;
       }
-      if (key == 'w'){
-        if (speed < 4){
-          speed += 0.1; 
+      if (key == 'w') {
+        if (speed < maxSpeed) {
+          speed += 0.1;
         }
       }
-      if (key == 's'){
-        if (speed > -1){
-          speed -= 0.05;        
+      if (key == 's') {
+        if (speed > -(maxSpeed/4)) {
+          speed -= 0.05;
         }
       }
     }
-    pos.add(PVector.mult(direction,speed));
-    if (pos.dist(new PVector(0,0)) > width/2) {
-      pos.x = 0;
-      pos.y = 0; 
-    }
+    //update postion
+    pos.add(PVector.mult(direction, speed));
+    //update the corners
+    //corners[0] = new PVector(sizeX/2 - pivotOffset,sizeY/2);
+    //corners[1] = new PVector(sizeX/2 - pivotOffset,-sizeY/2);
+    //corners[2] = new PVector(-sizeX/2 - pivotOffset,-sizeY/2);
+    //corners[3] = new PVector(-sizeX/2 - pivotOffset, sizeY/2);
   }
 }
 
-PVector add3Vec(PVector a,PVector b,PVector c){
+PVector add3Vec(PVector a, PVector b, PVector c) {
   PVector result = new PVector();
   result.x = a.x + b.x + c.x;
   result.y = a.y + b.y + c.y;
@@ -60,7 +78,7 @@ PVector add3Vec(PVector a,PVector b,PVector c){
   return result;
 }
 
-PVector negative(PVector a){
+PVector negative(PVector a) {
   PVector result = new PVector();
   result.x = -a.x;
   result.y = -a.y;
