@@ -11,25 +11,27 @@ void setup() {
   frameRate(30);
   carImg = loadImage("carImage.png"); //2400 x 1190
   carImg.resize(sizeX, sizeY);
-  println(lineIntersect(new PVector(0,0),new PVector(4,4),new PVector(4,0),new PVector(0,4)));
+  //println(lineIntersect(new PVector(0,0),new PVector(4,4),new PVector(4,0),new PVector(0,4)));
   car.setupCar();
 }
 
 void draw() {
+  translate(width/2, height/2);
   if (raceNotCreated) {
     racetrack.create();
   } else {
-    background(255);
-    textSize(16);
+    background(255);textSize(16);
     fill(0);
-    text("fps : " + round(frameRate), 0, 16);
+    text("fps : " + round(frameRate), 0-width/2, 16-height/2);
     racetrack.show();
-    translate(width/2, height/2);
+    
     car.update();
     car.show();
   }
 }
 
 void mouseClicked() {
-  points = (PVector[]) append(points, new PVector(mouseX, mouseY));
+  if (raceNotCreated) {
+    points = (PVector[]) append(points, new PVector(mouseX - width/2, mouseY - height/2));
+  }
 }
