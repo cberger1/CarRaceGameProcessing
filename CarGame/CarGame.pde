@@ -1,6 +1,5 @@
 
 PImage carImg;
-Boolean raceNotCreated = true;
 
 Car car = new Car();
 Racetrack racetrack = new Racetrack();
@@ -17,21 +16,24 @@ void setup() {
 
 void draw() {
   translate(width/2, height/2);
-  if (raceNotCreated) {
+  if (!racetrack.raceCreated) {
     racetrack.create();
   } else {
+    if (carInsideRaceTrack()){
+      pos = new PVector(0,0);  
+    }
     background(255);textSize(16);
     fill(0);
     text("fps : " + round(frameRate), 0-width/2, 16-height/2);
-    racetrack.show();
-    
+    racetrack.show();    
     car.update();
     car.show();
+    car.showInfo();
   }
 }
 
 void mouseClicked() {
-  if (raceNotCreated) {
+  if (!racetrack.raceCreated) {
     points = (PVector[]) append(points, new PVector(mouseX - width/2, mouseY - height/2));
   }
 }

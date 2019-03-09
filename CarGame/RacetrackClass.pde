@@ -2,7 +2,9 @@ boolean firstPoint = true;
 PVector[] points = new PVector[0];
 
 class Racetrack {
-
+  
+  boolean raceCreated = false;
+  
   void create() {
     int i = points.length - 1;
     if (i == 0) {
@@ -13,7 +15,7 @@ class Racetrack {
       stroke(0);
       strokeWeight(5);
       if (PVector.dist(points[i], points[0]) < 30) {
-        raceNotCreated = false;
+        raceCreated = true;
         points[i] = points[0];
       }
       line(points[i - 1].x, points[i - 1].y, points[i].x, points[i].y);
@@ -39,7 +41,7 @@ float[] lineIntersect(PVector a,PVector b,PVector c,PVector d) {
 boolean carInsideRaceTrack(){
   boolean intersect = false;
   PVector a,b,c,d = new PVector(0,0);
-  while (!intersect){
+  //while (!intersect){
     for (int co = 1;co < corners.length;co++){
       for (int po = 1;po < points.length;po++){
         a = points[po - 1]; b = points[po];
@@ -50,7 +52,7 @@ boolean carInsideRaceTrack(){
           intersect = true;
         }
       }
-    }
+    //}
   }
   return intersect; 
 }
