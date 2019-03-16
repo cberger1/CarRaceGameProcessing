@@ -36,6 +36,7 @@ class RadnomRoad {
         }
       }
     }
+    println();
   }
   void display() {
     stroke(0);

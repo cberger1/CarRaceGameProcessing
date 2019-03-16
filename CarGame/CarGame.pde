@@ -29,11 +29,13 @@ void draw() {
   //  car.reset();
   //}
   //racetrack.show();
+  
   car.update();
   road.update(car);
   road.display();
   car.show();
   car.showInfo();
+  car.getData(road);
   
   //}
 }
